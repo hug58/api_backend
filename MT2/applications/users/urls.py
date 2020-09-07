@@ -9,4 +9,9 @@ urlpatterns = [
         views.RegisterUser.as_view(),
         name='register'
     ),
+    path(
+        'list',
+        views.ListUsers.as_view(),
+        name='list_users'
+    ),
 ]

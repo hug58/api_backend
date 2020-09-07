@@ -6,8 +6,8 @@ from .serializers import FriendsSerializer, FriendsPagination
 
 
 class FriendsViewSet(viewsets.ModelViewSet):
-    #authentication_classes = (TokenAuthentication,)
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [IsAuthenticated]
     serializer_class = FriendsSerializer
     queryset = Friends.objects.all()
     pagination_class = FriendsPagination

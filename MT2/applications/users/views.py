@@ -1,12 +1,27 @@
 from .serializers import UserSerializer
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from .models import User
 from rest_framework.authtoken.models import Token
 
 
+class ListUsers(ListAPIView):
+    serializer_class = UserSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        print(self.request.user)
+        return User.objects.all()
+
+
 class RegisterUser(APIView):
     serializer_class = UserSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = [IsAdminUser]
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
