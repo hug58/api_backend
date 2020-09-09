@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UserManager
-
+from applications.friends.models import Friends
 
 # Create your models here.
 
@@ -11,6 +11,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField()
     name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)
+    friends = models.ManyToManyField(Friends, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'

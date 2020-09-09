@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAdminUser
 from .serializers import UserSerializer, UserPagination
 
 
+
 class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = [IsAdminUser]

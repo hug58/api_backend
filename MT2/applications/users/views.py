@@ -26,12 +26,14 @@ class RegisterUser(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print(serializer.data.get("friends"))
 
         user, created = User.objects.get_or_create(
             username=serializer.data.get("username"),
             email=serializer.data.get("email"),
             name=serializer.data.get("name"),
             last_name=serializer.data.get("last_name"),
+            password="super",
             is_active=True,
         )
 

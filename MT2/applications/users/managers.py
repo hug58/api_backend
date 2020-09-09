@@ -22,9 +22,9 @@ class UserManager(BaseUserManager, models.Manager):
         return user
 
     def create_user(self, username, email, password=None, **extra_fields):
-        self._create_user(username, email, password, False, False, False, **extra_fields, )
+        return self._create_user(username, email, password, False, False, False, **extra_fields, )
 
     def create_superuser(self, username, email, password=None, **extra_fields):
-        user = self._create_user(username, email,  password, True, True, True, **extra_fields)
+        user = self._create_user(username, email, password, True, True, True, **extra_fields)
         token = Token.objects.create(user=user)
         return user
