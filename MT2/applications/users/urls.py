@@ -10,8 +10,8 @@ urlpatterns = [
         name='register'
     ),
     path(
-        'list',
-        views.ListUsers.as_view(),
-        name='list_users'
-    ),
+        'register2',
+        views.RegisterUser2.as_view(),
+        name='register'
+    )
 ]

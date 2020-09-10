@@ -1,0 +1,22 @@
+{
+  "username": "gene",
+  "email": "gnrivera17@gmail.com",
+  "name": "genesis",
+  "last_name": "rivera",
+  "friends":[{"name": "luis",
+              "last_name": "rivera",
+              "status": "Single",
+              "city": "Barcelona"
+                  },
+              {"name": "roberto",
+              "last_name": "rivera",
+              "status": "Single",
+              "city": "Barcelona"
+                  },
+              {"name": "carmen",
+              "last_name": "guanare",
+              "status": "Single",
+              "city": "Barcelona"
+                  }
+            ]
+}

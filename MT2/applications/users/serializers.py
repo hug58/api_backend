@@ -1,3 +1,5 @@
+from abc import ABC
+
 from rest_framework import serializers, pagination
 from .models import User
 from applications.friends.serializers import FriendsSerializer
@@ -18,3 +20,14 @@ class UserSerializer(serializers.ModelSerializer):
 class UserPagination(pagination.PageNumberPagination):
     page_size = 5
     max_page_size = 100
+
+
+class UserSerializer2(serializers.Serializer):
+    """ Serialziador para recibir una venta"""
+
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    name = serializers.CharField()
+    last_name = serializers.CharField()
+    friends = FriendsSerializer(many=True)
+
