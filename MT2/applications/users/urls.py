@@ -5,13 +5,13 @@ app_name = "user_app"
 
 urlpatterns = [
     path(
-        'register',
+        'register_user',
         views.RegisterUser.as_view(),
-        name='register'
+        name='register_user'
     ),
     path(
-        'register2',
-        views.RegisterUser2.as_view(),
-        name='register'
+        'all_user/excel',
+        views.Data.as_view(),
+        name='all_user'
     )
 ]

@@ -1,21 +1,52 @@
-from .serializers import UserSerializer, UserSerializer2
+from django.http import HttpResponse
+from rest_framework import status
+from .serializers import UserSerializer, UserListSerializer
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from .models import User
 from applications.friends.models import Friends
 from rest_framework.authtoken.models import Token
+from .models import User
+from openpyxl import Workbook
 
 
-class RegisterUser2(APIView):
-    serializer_class = UserSerializer2
+class Data(APIView):
+    serializer_class = UserListSerializer
+
+    def get(self, request):
+        users = User.objects.all()
+        wb = Workbook()
+        ws = wb.active
+        ws["B2"] = "username"
+        ws["C2"] = "name"
+        ws["D2"] = "last_name"
+        ws["E2"] = "email"
+
+        i = 4
+        for user in users:
+            ws.cell(row=i, column=2).value = user.username
+            ws.cell(row=i, column=3).value = user.name
+            ws.cell(row=i, column=4).value = user.last_name
+            ws.cell(row=i, column=5).value = user.email
+            i = i + 1
+
+        file_name = "User.xlsx"
+
+        response = HttpResponse(content_type="application/ms-excel")
+        contain = "attachment; filename={0}".format(file_name)
+        response["Content-Disposition"] = contain
+        wb.save(response)
+        return response
+
+
+class RegisterUser(APIView):
+    serializer_class = UserSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def post(self, request):
-        serializer = UserSerializer2(data=request.data)
+        serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user, created = User.objects.get_or_create(
             username=serializer.validated_data['username'],
@@ -54,42 +85,4 @@ class RegisterUser2(APIView):
             "message": "user and friends added",
             "token": token.key,
             "user": user_get,
-            "friends": friends})
-
-
-class RegisterUser(APIView):
-    serializer_class = UserSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = [IsAdminUser]
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        print(serializer.data.get("friends"))
-
-        user, created = User.objects.get_or_create(
-            username=serializer.data.get("username"),
-            email=serializer.data.get("email"),
-            name=serializer.data.get("name"),
-            last_name=serializer.data.get("last_name"),
-            password="super",
-            is_active=True,
-        )
-
-        if created:
-
-            token = Token.objects.create(user=user)
-        else:
-
-            token = Token.objects.get(user=user)
-
-        user_get = {
-            'id': user.pk,
-            'username': user.username,
-            'email': user.email,
-            'name': user.name,
-            'last_name': user.last_name,
-        }
-
-        return Response({"token": token.key,
-                         "user": user_get})
+            "friends": friends}, status=status.HTTP_201_CREATED)
