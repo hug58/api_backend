@@ -1,1 +1,7 @@
-MT2/secret.json
+*/secret.json
+*/__pycache__/*
+*/venv/*
+*/.venv/*
+.idea/*
+venv/*
+#*/db.sqlite3
